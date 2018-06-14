@@ -16,6 +16,20 @@
 #include "msm8976-mdss-mtp.dtsi"
 /*#include "msm8976-wsa881x.dtsi"*/
 
+/ {
+	/* pstore: reserved DDR memory region for post-mortem kernel logs */
+	memory {
+		pstore_reserve_mem: pstore_reserve_mem_region@0 {
+			linux,reserve-contiguous-region;
+			linux,reserve-region;
+			linux,remove-completely;
+			reg = <0x00000000 0xf0000000    /* Address */
+			       0x00000000 0x00400000>;  /* Size */
+			label = "pstore_reserve_mem";
+		};
+	};
+};
+
 &i2c_4 { /* BLSP1 QUP4 */
 	focaltech@38 {
 			compatible = "focaltech,5x06";

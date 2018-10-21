@@ -1,5 +1,13 @@
 ifeq ($(CONFIG_OF),y)
 
+ifeq ($(CONFIG_MACH_XIAOMI),y)
+
+ifeq ($(CONFIG_MACH_XIAOMI_KENZO),y)
+dtb-$(CONFIG_MACH_XIAOMI_MSM8916) += kenzo.dtb
+endif # CONFIG_MACH_XIAOMI_KENZO
+
+else # CONFIG_MACH_XIAOMI unset, default CAF targets
+
 dtb-$(CONFIG_ARCH_MSM8974) += msm8974-v1-cdp.dtb \
 	msm8974-v1-fluid.dtb \
 	msm8974-v1-liquid.dtb \
@@ -316,6 +324,8 @@ dtb-$(CONFIG_ARCH_MSM8992) += msm8992-sim.dtb \
 	msm8992-pmi8994-pm8004-mtp.dtb
 dtb-$(CONFIG_ARCH_MDMFERMIUM) += mdmfermium-rumi.dtb
 
+endif # CONFIG_MACH_XIAOMI unset, default CAF targets
+
 DTB_NAMES := $(subst $\",,$(CONFIG_BUILD_ARM_APPENDED_DTB_IMAGE_NAMES))
 ifneq ($(DTB_NAMES),)
 DTB_LIST := $(addsuffix .dtb,$(DTB_NAMES))
@@ -325,7 +335,7 @@ endif
 
 targets += dtbs
 targets += $(addprefix ../, $(DTB_LIST))
-endif
+endif # CONFIG_OF
 
 $(obj)/../%.dtb: $(src)/%.dts FORCE
 	$(call if_changed_dep,dtc)

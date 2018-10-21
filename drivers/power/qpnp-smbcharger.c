@@ -6089,11 +6089,10 @@ bool is_oldtest = false;
 void runin_work(struct smbchg_chip *chip, int batt_capacity)
 {
 	int rc;
-	bool unused;
 
 	if (!chip->usb_present || !BatteryTestStatus_enable) {
 		if (is_oldtest) {
-			rc = smbchg_battchg_en(chip, true, REASON_BATTCHG_USER, &unused);
+			rc = vote(chip->battchg_suspend_votable, BATTCHG_USER_EN_VOTER, false, 0);
 			if (rc)
 				dev_err(chip->dev, "Couldn't enable charge rc=%d\n", rc);
 			is_oldtest = false;
@@ -6104,14 +6103,14 @@ void runin_work(struct smbchg_chip *chip, int batt_capacity)
 	pr_info("%s:BatteryTestStatus_enable = %d chip->usb_present = %d \n", __func__, BatteryTestStatus_enable, chip->usb_present);
 	if (batt_capacity > 80) {
 		pr_debug("smbcharge_get_prop_batt_capacity > 80\n");
-		rc = smbchg_battchg_en(chip, false, REASON_BATTCHG_USER, &unused);
+		rc = vote(chip->battchg_suspend_votable, BATTCHG_USER_EN_VOTER, false, 0);
 		if (rc)
 			dev_err(chip->dev,
 				"Couldn't disenable charge rc=%d\n", rc);
 	} else {
 		if (batt_capacity < 60) {
 		pr_debug("smbcharge_get_prop_batt_capacity < 60\n");
-		rc = smbchg_battchg_en(chip, true, REASON_BATTCHG_USER, &unused);
+		rc = vote(chip->battchg_suspend_votable, BATTCHG_USER_EN_VOTER, true, 0);
 		if (rc)
 			dev_err(chip->dev,
 				"Couldn't enable charge rc=%d\n", rc);
@@ -6321,7 +6320,7 @@ static int smb_for_batt_temp_too_high_too_low(struct smbchg_chip *chip,
 		int temp)
 {
 	static int is_charging ;
-	bool noused;
+
 	pr_debug("[batt temp func]chip->usb_present = %d, temp = %d\n",
 			chip->usb_present, temp);
 	if (!chip->usb_present)
@@ -6330,7 +6329,7 @@ static int smb_for_batt_temp_too_high_too_low(struct smbchg_chip *chip,
 		pr_debug("temp too high , disable charging \n");
 		if (is_charging) {
 			pr_debug("temp too high, disable charging \n");
-			smbchg_battchg_en(chip, false, REASON_BATTCHG_USER, &noused);
+			vote(chip->battchg_suspend_votable, BATTCHG_USER_EN_VOTER, false, 0);
 			power_supply_changed(&chip->batt_psy);
 			power_supply_changed(chip->usb_psy);
 			is_charging = 0;
@@ -6340,7 +6339,7 @@ static int smb_for_batt_temp_too_high_too_low(struct smbchg_chip *chip,
 		pr_debug("temp too low , disable charging \n");
 		if (is_charging) {
 			pr_debug("temp too low , disable charging \n");
-			smbchg_battchg_en(chip, false, REASON_BATTCHG_USER , &noused);
+			vote(chip->battchg_suspend_votable, BATTCHG_USER_EN_VOTER, false, 0);
 			power_supply_changed(&chip->batt_psy);
 			power_supply_changed(chip->usb_psy);
 			is_charging = 0;
@@ -6351,7 +6350,7 @@ static int smb_for_batt_temp_too_high_too_low(struct smbchg_chip *chip,
 		pr_debug("temp is well, charging is enable \n");
 		if (!is_charging) {
 			pr_debug("temp is well, charging is enable \n");
-			smbchg_battchg_en(chip, true, REASON_BATTCHG_USER, &noused);
+			vote(chip->battchg_suspend_votable, BATTCHG_USER_EN_VOTER, true, 0);
 			power_supply_changed(&chip->batt_psy);
 			power_supply_changed(chip->usb_psy);
 			is_charging = 1;

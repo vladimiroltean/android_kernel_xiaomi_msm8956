@@ -902,7 +902,6 @@ int wcd_clsh_get_clsh_state(struct wcd_clsh_cdc_data *clsh)
 	return clsh->state;
 }
 EXPORT_SYMBOL(wcd_clsh_get_clsh_state);
-
 void wcd_clsh_init(struct wcd_clsh_cdc_data *clsh)
 {
 	int i;

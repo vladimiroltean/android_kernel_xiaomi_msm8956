@@ -797,8 +797,6 @@ struct tasha_priv {
 	int hph_r_gain;
 	int rx_7_count;
 	int rx_8_count;
-	int hph_l_gain;
-	int hph_r_gain;
 };
 
 static int tasha_codec_vote_max_bw(struct snd_soc_codec *codec,

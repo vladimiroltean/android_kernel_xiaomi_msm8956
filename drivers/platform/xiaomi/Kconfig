@@ -1,0 +1,30 @@
+# Xiaomi configuration options
+
+config MACH_XIAOMI
+	bool "Xiaomi devices"
+	depends on ARCH_MSM8916
+	help
+	  Support for Xiaomi products
+
+config MACH_XIAOMI_MSM8916
+	bool "Xiaomi MSM8916 family"
+	depends on MACH_XIAOMI
+	help
+	  Support for Xiaomi boards using the MSM8916 chipset family
+
+menu "Xiaomi board selection"
+	depends on MACH_XIAOMI_MSM8916
+
+config MACH_XIAOMI_KENZO
+	bool "Xiaomi Kenzo boards"
+	depends on MACH_XIAOMI_MSM8916
+	help
+	  Support for Xiaomi Redmi Note 3 boards
+
+config MACH_XIAOMI_HYDROGEN
+	bool "Xiaomi Hydrogen boards"
+	depends on MACH_XIAOMI_MSM8916
+	help
+	  Support for Xiaomi Mi Max boards
+
+endmenu

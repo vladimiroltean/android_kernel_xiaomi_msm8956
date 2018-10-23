@@ -19,6 +19,19 @@
 #include "kenzo-dsi-panel-sharp-r63315-1080p-video.dtsi"
 #include "msm8956-mtp.dtsi"
 
+/* Battery profiles
+ * Overrides msm8956-mtp.dtsi
+ */
+/ {
+	/delete-node/ qcom,battery-data;
+	mtp_batterydata: qcom,battery-data {
+		qcom,batt-id-range-pct = <15>;
+		#include "kenzo-batterydata-coslight-4000mah-4400mv.dtsi"
+		#include "kenzo-batterydata-coslight-4000mah-4400mv-10k.dtsi"
+		#include "kenzo-batterydata-sunwoda-4000mah-4400mv.dtsi"
+	};
+};
+
 / {
 	model = "Qualcomm Technologies, Inc. MSM8956 MTP";
 	compatible = "qcom,msm8956-mtp", "qcom,msm8956", "qcom,mtp";

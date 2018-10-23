@@ -14,6 +14,9 @@
 /dts-v1/;
 
 #include "msm8956.dtsi"
+#include "kenzo-dsi-panel-tianma-nt35596-1080p-video.dtsi"
+#include "kenzo-dsi-panel-boe-nt35532-1080p-video.dtsi"
+#include "kenzo-dsi-panel-sharp-r63315-1080p-video.dtsi"
 #include "msm8956-mtp.dtsi"
 
 / {
